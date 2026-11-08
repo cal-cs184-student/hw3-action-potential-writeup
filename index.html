@@ -87,8 +87,8 @@
 		Rendering starts in <code>raytrace_pixel</code>, which is called once per pixel. For each of the <code>ns_aa</code> samples it picks a random point inside the pixel's square (or the exact center if there's only one sample), divides by the image width and height to get coordinates in \([0,1]^2\), and asks the camera for a ray through that point. The radiance from all samples is averaged and written to the pixel.
 		</p>
 		<p>
-		Inside <code>Camera::generate_ray</code>, I picture a sensor plane sitting one unit in front of the camera at \(z = -1\) in camera space. The field of view tells me how big that plane is: it spans \(\pm\tan(\text{hFov}/2)\) horizontally and \(\pm\tan(\text{vFov}/2)\) vertically. So a normalized coordinate \((x, y)\) maps linearly to the point
-		\[ \left(-\tan\tfrac{\text{hFov}}{2} + 2x\tan\tfrac{\text{hFov}}{2},\; -\tan\tfrac{\text{vFov}}{2} + 2y\tan\tfrac{\text{vFov}}{2},\; -1\right). \]
+		Inside <code>Camera::generate_ray</code>, I picture a sensor plane sitting one unit in front of the camera at \(z = -1\) in camera space. The field of view tells me how big that plane is: it spans \(\pm\tan(\text{hFov}/2)\) horizontally and \(\pm\tan(\text{vFov}/2)\) vertically. Writing \(h = \tan(\text{hFov}/2)\) and \(v = \tan(\text{vFov}/2)\), a normalized coordinate \((x, y)\) maps linearly from \([0,1]\) onto \([-h, h]\) and \([-v, v]\), which gives the point
+		\[ \big((2x - 1)\,h,\; (2y - 1)\,v,\; -1\big). \]
 		That point is also the ray's direction in camera space, since the camera sits at the origin. I rotate it into world space with the camera-to-world matrix <code>c2w</code>, normalize it, start the ray at the camera position, and set <code>min_t</code> and <code>max_t</code> to the near and far clipping distances.
 		</p>
 
@@ -104,7 +104,7 @@
 		The ray hits the triangle only if all three barycentric coordinates \(b_1\), \(b_2\), and \(b_0 = 1 - b_1 - b_2\) are non-negative (so the point lies inside the triangle) and \(t\) falls inside the ray's current range. If the denominator is close to zero, the ray is parallel to the triangle's plane and I treat it as a miss. On a hit, I reuse the barycentric coordinates to blend the three vertex normals, \(b_0 N_1 + b_1 N_2 + b_2 N_3\). That's why the meshes below look smooth instead of faceted.
 		</p>
 		<p>
-		Spheres are simpler. Plugging the ray into \(\lVert P - C \rVert^2 = R^2\) gives a quadratic \(at^2 + bt + c = 0\) with \(a = D \cdot D\), \(b = 2(O - C)\cdot D\), and \(c = \lVert O - C\rVert^2 - R^2\). A negative discriminant means a miss. Otherwise I take the smaller root if it's in range, or the larger one if the ray starts inside the sphere. The normal at the hit point is \((P - C)/R\).
+		Spheres are simpler. Plugging the ray into \(\|P - C\|^2 = R^2\) gives a quadratic \(at^2 + bt + c = 0\) with \(a = D \cdot D\), \(b = 2(O - C)\cdot D\), and \(c = \|O - C\|^2 - R^2\). A negative discriminant means a miss. Otherwise I take the smaller root if it's in range, or the larger one if the ray starts inside the sphere. The normal at the hit point is \((P - C)/R\).
 		</p>
 
 		<p>Normal-shaded renders of small scenes (each pixel colored by its surface normal):</p>
