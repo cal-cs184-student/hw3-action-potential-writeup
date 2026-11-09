@@ -9,7 +9,8 @@
 
 			.container {
 				margin: 0 auto;
-				padding: 60px 20%;
+				max-width: 820px;
+				padding: 60px 16px;
 			}
 
 			figure {
@@ -44,12 +45,21 @@
 			table.times {
 				border-collapse: collapse;
 				margin: 12px auto;
+				font-size: 0.85em;
 			}
 
 			table.times th, table.times td {
 				border: 1px solid #ccc;
-				padding: 6px 12px;
+				padding: 5px 8px;
 				text-align: right;
+			}
+
+			table.times td {
+				white-space: nowrap;
+			}
+
+			tr, figcaption, img {
+				break-inside: avoid;
 			}
 
 			table.times th:first-child, table.times td:first-child {
@@ -389,6 +399,9 @@
 			<tr><td>CBlucy.dae</td><td>133,796</td><td>0.033 / 0.103</td><td>24.29 / 23.92</td><td>62.5 / 60.8</td><td>41.4 / 23.8</td><td>&minus;42%</td></tr>
 		</table>
 		<p>
+		The coil and the dragon are mirrors and Lucy is glass. Those materials aren't part of this homework, so the objects render black, but every ray still has to traverse the BVH to find them, so the timings are still a fair comparison.
+		</p>
+		<p>
 		SAH built a cheaper tree on every scene, and every render was at least a little faster. Building takes about three times as long, since it bins all three axes instead of computing one average, but even for wall-e's 240,000 triangles that's under a fifth of a second.
 		</p>
 		<p>
@@ -402,8 +415,8 @@
 		</p>
 		<table class="grid">
 			<tr>
-				<td><img src="assets/p6_coil_mean.png"/><figcaption>CBcoil.dae, mean split (5.67 s)</figcaption></td>
-				<td><img src="assets/p6_coil_sah.png"/><figcaption>CBcoil.dae, SAH split (3.42 s)</figcaption></td>
+				<td><img src="assets/p6_bunny_mean.png"/><figcaption>CBbunny.dae, mean split (3.46 s)</figcaption></td>
+				<td><img src="assets/p6_bunny_sah.png"/><figcaption>CBbunny.dae, SAH split (2.73 s)</figcaption></td>
 			</tr>
 		</table>
 
